@@ -11,7 +11,10 @@ Build a production-ready CLI tool to transfer data between PostgreSQL databases 
 
 ### Command Usage
 ```bash
-db transfer --from "postgres://user:pass@host:port/db" --to "postgres://user:pass@host:pass@host:port/db"
+dbu transfer --from "postgres://user:pass@host:port/db" --to "postgres://user:pass@host:port/db"
+# Future features:
+# dbu backup --source "postgres://..." --output "/path/to/backup"
+# dbu restore --input "/path/to/backup" --target "postgres://..."
 ```
 
 ### Success Criteria
@@ -32,11 +35,11 @@ db transfer --from "postgres://user:pass@host:port/db" --to "postgres://user:pas
 | Runtime | Node 20+ | Node 18 or lower |
 | Language | TypeScript 5+ | JavaScript only |
 | Package Manager | Pnpm | npm, yarn |
-| CLI Framework | Commander, CAC | yargs, oclif |
-| Database ORM | Drizzle, Kysely | TypeORM, Sequelize |
+| CLI Framework | Commander.js (RECOMMENDED) | CAC |
+| Database ORM | Drizzle (RECOMMENDED) | Kysely |
 | Validation | Zod 3.22.4+ | joi, superstruct |
 | Testing | Vitest | Jest, Mocha |
-| Monorepo | Moon, Nx, Turborepo | Lerna, custom |
+| Monorepo | Moon (RECOMMENDED) | Nx, Turborepo |
 
 ### Architecture Requirements
 - **Monorepo structure:** `packages/{types,utils,core,cli}`
@@ -45,6 +48,8 @@ db transfer --from "postgres://user:pass@host:port/db" --to "postgres://user:pas
 - **Result type pattern:** All functions return `{ success, value/error }`
 - **Error handling:** Custom error classes + Result pattern
 - **No `any` types:** Use `unknown` with type guards
+- **All SQL queries must be parameterized:** No string concatenation allowed
+- **80% test coverage minimum:** TDD required
 
 ### Code Standards
 - **TypeScript strict mode:** All flags enabled
@@ -193,11 +198,12 @@ test/
 **Dependencies:** types, utils, core
 
 Deliverables:
-- [ ] CLI entry point (Commander.js or CAC)
-- [ ] Argument parsing
-- [ ] Credential handling
-- [ ] Progress display
-- [ ] Error reporting
+- [ ] CLI entry point (Commander.js)
+- [ ] Core commands: `transfer` (Phase 1), `backup/restore` (Phase 3)
+- [ ] Argument parsing with Zod validation
+- [ ] Credential handling with environment variables
+- [ ] Progress display with rich output
+- [ ] Error reporting with structured logs
 - [ ] 80%+ test coverage
 
 Key Files:
@@ -205,14 +211,16 @@ Key Files:
 src/
   ├── index.ts
   ├── cli.ts               // CLI definition
-  ├── commands.ts          // Command handlers
+  ├── commands/
+  │   ├── transfer.ts      // Main transfer logic
+  │   └── backup-restore.ts// Future commands
   ├── display.ts           // UI/Progress display
   └── handler.ts           // Main handler
 test/
   ├── cli.test.ts
   └── handler.test.ts
 bin/
-  └── db-transfer          // Executable
+  └── dbu                 // Executable
 ```
 
 ### Phase 3: Integration & Testing (Week 8)
@@ -261,11 +269,14 @@ bin/
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|-----------|
-| TypeScript strict mode blockers | Low | High | Early adoption, type audits |
-| Test coverage gaps | Medium | High | TDD approach, code review |
-| Performance with large datasets | Medium | High | Streaming, batch testing early |
-| SQL injection vulnerabilities | Low | Critical | Parameterized queries only, review |
-| Dependency version conflicts | Low | Medium | Pin exact versions, pnpm audit |
+| TypeScript strict mode blockers | Low | High | Early adoption, type audits with strict TypeScript enforcement |
+| Test coverage gaps | Medium | High | TDD approach with 80%+ coverage enforced |
+| Performance with large datasets | Medium | High | Streaming and batch testing with PostgreSQL 15+ |
+| SQL injection vulnerabilities | Low | Critical | Parameterized queries only, code reviews |
+| Dependency version conflicts | Low | Medium | Pin exact versions in `pnpm-overrides` and audit on merge |
+| Instantiation errors in CLI | Medium | High | Comprehensive CLI argument validation |
+| Transaction rollback failures | Medium | High | Built-in retry logic and transaction rollback on error |
+| Configuration validation | Medium | High | Zod validation at runtime |
 
 ---
 
