@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@db-utils/types": ["packages/types/src"],
+      "@db-utils/types/*": ["packages/types/src/*"],
+      "@db-utils/utils": ["packages/utils/src"],
+      "@db-utils/utils/*": ["packages/utils/src/*"],
+      "@db-utils/core": ["packages/core/src"],
+      "@db-utils/core/*": ["packages/core/src/*"],
+      "@db-utils/cli": ["packages/cli/src"],
+      "@db-utils/cli/*": ["packages/cli/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "packages/*/node_modules", "packages/*/dist"]
+}

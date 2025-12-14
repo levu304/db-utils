@@ -1,0 +1,24 @@
+{
+  "name": "@db-utils/types",
+  "version": "1.0.0",
+  "description": "Shared types for DB Utils",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "database",
+    "types",
+    "postgresql"
+  ],
+  "author": "Le Vu <levu304@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

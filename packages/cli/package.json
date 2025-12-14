@@ -1,0 +1,36 @@
+{
+  "name": "@db-utils/cli",
+  "version": "1.0.0",
+  "description": "CLI interface for DB Utils",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "bin": {
+    "dbu": "./bin/dbu"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "database",
+    "postgresql",
+    "cli",
+    "migration",
+    "transfer"
+  ],
+  "author": "Le Vu <levu304@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@db-utils/types": "workspace:*",
+    "@db-utils/utils": "workspace:*",
+    "@db-utils/core": "workspace:*",
+    "commander": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

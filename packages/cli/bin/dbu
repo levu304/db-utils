@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+import { program } from 'commander';
+import { transferCommand } from '../src/commands/transfer';
+import { 
+  ConnectionError, 
+  QueryError, 
+  ValidationError,
+  ConfigurationError
+} from '@db-utils/types';
+import { logger } from '@db-utils/utils';
+
+// Set up global error handlers
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught exception:', { error });
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled rejection:', { reason, promise });
+  process.exit(1);
+});
+
+// Main CLI program
+program
+  .name('dbu')
+  .description('PostgreSQL Data Transfer CLI Tool')
+  .version('1.0.0')
+  .hook('preAction', () => {
+    logger.info('DB Utils CLI started');
+  });
+
+// Register commands
+transferCommand(program);
+
+// Handle unknown commands
+program
+  .on('command:*', () => {
+    logger.error('Unknown command. Use --help for available commands.');
+    process.exit(1);
+  });
+
+// Parse command line arguments
+program.parseAsync(process.argv)
+  .catch((error) => {
+    if (error instanceof ConnectionError) {
+      logger.error('Database connection error:', { message: error.message });
+    } else if (error instanceof QueryError) {
+      logger.error('Database query error:', { message: error.message });
+    } else if (error instanceof ValidationError) {
+      logger.error('Validation error:', { message: error.message });
+    } else if (error instanceof ConfigurationError) {
+      logger.error('Configuration error:', { message: error.message });
+    } else {
+      logger.error('Unexpected error:', { error });
+    }
+    process.exit(1);
+  });

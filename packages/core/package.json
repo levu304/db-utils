@@ -1,0 +1,33 @@
+{
+  "name": "@db-utils/core",
+  "version": "1.0.0",
+  "description": "Core database functionality for DB Utils",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "database",
+    "postgresql",
+    "migration",
+    "schema",
+    "transfer"
+  ],
+  "author": "Le Vu <levu304@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@db-utils/types": "workspace:*",
+    "@db-utils/utils": "workspace:*",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.10.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

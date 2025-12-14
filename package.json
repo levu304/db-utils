@@ -1,0 +1,51 @@
+{
+  "name": "@db-utils/root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PostgreSQL Data Transfer CLI Tool",
+  "keywords": [
+    "postgresql",
+    "database",
+    "transfer",
+    "cli",
+    "migration"
+  ],
+  "homepage": "https://github.com/levu304/db-utils#readme",
+  "bugs": {
+    "url": "https://github.com/levu304/db-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levu304/db-utils.git"
+  },
+  "license": "MIT",
+  "author": "Le Vu <levu304@gmail.com>",
+  "scripts": {
+    "build": "moon run build",
+    "test": "moon run test",
+    "test:coverage": "moon run test --coverage",
+    "lint": "moon run lint",
+    "type-check": "moon run type-check",
+    "clean": "moon run clean",
+    "dev": "moon run dev"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "moon": "^1.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.0.0",
+  "pnpm": {
+    "overrides": {
+      "zod": "^3.22.4",
+      "pg": "^8.11.3"
+    }
+  }
+}
