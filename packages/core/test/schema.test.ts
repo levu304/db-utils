@@ -10,21 +10,23 @@ import {
 import { Pool } from 'pg';
 
 // Mock pg module
-vi.mock('pg', () => {
-  const mockPool = {
-    connect: vi.fn().mockResolvedValue({
-      release: vi.fn(),
-    }),
-    query: vi.fn().mockResolvedValue({
-      rows: [],
-      rowCount: 0,
-    }),
-    end: vi.fn().mockResolvedValue(undefined),
-  };
-  
+vi.mock('pg', async (importOriginal) => {
+  const originalModule = await importOriginal<typeof import('pg')>();
+
+  // Need to ensure that the mocked Pool class has a prototype these tests can interact with
+  class MockClient {
+    release = vi.fn();
+  }
+
+  class MockPool {
+    connect = vi.fn(() => Promise.resolve(new MockClient()));
+    query = vi.fn(() => Promise.resolve({ rows: [], rowCount: 0 }));
+    end = vi.fn(() => Promise.resolve(undefined));
+  }
+
   return {
-    Pool: vi.fn(() => mockPool),
-    mockPool,
+    ...originalModule,
+    Pool: vi.fn(() => new MockPool()),
   };
 });
 
@@ -111,7 +113,7 @@ describe('SchemaDiscovery', () => {
         rowCount: 0,
       };
       
-      vi.mocked(Pool.prototype.query).mockImplementation((query: string) => {
+      vi.mocked(Pool.prototype.query as any).mockImplementation((query: string) => {
         if (query.includes('current_database()')) {
           return Promise.resolve(mockDatabaseNameResult);
         } else if (query.includes('information_schema.tables') && query.includes('BASE TABLE')) {
@@ -124,7 +126,7 @@ describe('SchemaDiscovery', () => {
         return Promise.resolve({ rows: [], rowCount: 0 });
       });
       
-      vi.mocked(Pool.prototype.query).mockImplementationOnce(() => Promise.resolve(mockDatabaseNameResult))
+      vi.mocked(Pool.prototype.query as any).mockImplementationOnce(() => Promise.resolve(mockDatabaseNameResult))
         .mockImplementationOnce(() => Promise.resolve(mockTablesResult))
         .mockImplementationOnce(() => Promise.resolve(mockViewsResult))
         .mockImplementationOnce(() => Promise.resolve(mockMaterializedViewsResult))
@@ -148,7 +150,7 @@ describe('SchemaDiscovery', () => {
     });
 
     it('should handle schema discovery errors', async () => {
-      vi.mocked(Pool.prototype.query).mockRejectedValue(new Error('Database error'));
+      vi.mocked(Pool.prototype.query as any).mockRejectedValue(new Error('Database error'));
       
       const result = await schemaDiscovery.discoverSchema();
       
@@ -168,7 +170,7 @@ describe('SchemaDiscovery', () => {
         rows: [{ current_database: 'testdb' }],
         rowCount: 1,
       };
-      vi.mocked(Pool.prototype.query).mockResolvedValue(mockResult);
+      vi.mocked(Pool.prototype.query as any).mockResolvedValue(mockResult);
       
       // Mock the detailed discovery methods to return empty arrays
       vi.spyOn(schemaDiscovery as any, 'discoverColumns').mockResolvedValue([]);

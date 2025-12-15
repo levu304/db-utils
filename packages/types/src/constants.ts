@@ -28,7 +28,7 @@ export const DEFAULT_RETRY_DELAY = 1000; // 1 second
 /**
  * Environment variable names
  */
-export const ENV_VARS = {
+const ENV_VARS_RAW = {
   SOURCE_DATABASE_URL: 'SOURCE_DATABASE_URL',
   TARGET_DATABASE_URL: 'TARGET_DATABASE_URL',
   DATABASE_HOST: 'DATABASE_HOST',
@@ -37,3 +37,5 @@ export const ENV_VARS = {
   DATABASE_USERNAME: 'DATABASE_USERNAME',
   DATABASE_PASSWORD: 'DATABASE_PASSWORD',
 } as const;
+
+export const ENV_VARS = Object.freeze(ENV_VARS_RAW);

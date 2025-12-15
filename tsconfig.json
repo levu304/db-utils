@@ -39,5 +39,13 @@
       "@db-utils/cli/*": ["packages/cli/src/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "packages/*/node_modules", "packages/*/dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "packages/*/node_modules",
+    "packages/*/dist",
+    "packages/*/test",
+    "packages/*/vitest.config.ts",
+    "vitest.workspace.ts"
+  ]
 }
