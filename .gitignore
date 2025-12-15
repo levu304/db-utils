@@ -2,3 +2,40 @@
 # moon
 .moon/cache
 .moon/docker
+
+# Gitignore for DB Utils project
+
+# Node.js
+node_modules/
+*.log
+
+# pnpm
+# pnpm-lock.yaml # Explicitly mentioned in AGENTS.md to be present in repo
+.pnpm-store/ # Local pnpm store, can be ignored
+
+# TypeScript
+*.tsbuildinfo
+dist/ # TypeScript compilation output directory
+
+# Build outputs
+out/
+build/
+
+# Testing (Vitest)
+coverage/
+.vitest-cache/
+
+# Editor/IDE files
+.vscode/
+.idea/
+.DS_Store
+*.bak
+*.swp
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
